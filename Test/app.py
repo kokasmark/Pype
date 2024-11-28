@@ -7,18 +7,18 @@ sys.path.insert(0, parent_dir)
 
 
 import pype
+from pype import HTMLAttributes
 
-prev_count = 0
+
 def updatingFunc(app):
-    global prev_count
+    #this function runs on a background thread
+    pass
 
-    count = app.get_state("count")
+def changed_count(app):
+    print(f'\033[102m Pype \033[0m Count changed to: {app.state["count"]}')
 
-    if prev_count != count:
-        print('\33[102m' + ' Pype ' + '\33[0m'+f" New count value: {app.get_state('count')}")
-        prev_count = count
-
-app = pype.Pype("Testing",build="prod")
-app.set_state("count",prev_count)
-app.bind('count','count')
+app = pype.Pype("Testing",tools=False)
+app.set_state("count",0)
+app.bind('count','count',HTMLAttributes.INNERHTML)
+app.hook('count',changed_count)
 app.run([updatingFunc])

@@ -1,20 +1,73 @@
 import webview
 import threading
+import os
+import sys
+
+from enum import Enum
+
+class HTMLAttributes(Enum):
+    # Common attributes
+    CLASS = 'class'
+    ID = 'id'
+    STYLE = 'style'
+    INNERHTML = 'innerHTML'
+    TITLE = 'title'
+    ALT = 'alt'
+    HREF = 'href'
+    SRC = 'src'
+    ACTION = 'action'
+    METHOD = 'method'
+    TARGET = 'target'
+    REL = 'rel'
+    TYPE = 'type'
+    VALUE = 'value'
+    NAME = 'name'
+    PLACEHOLDER = 'placeholder'
+    REQUIRED = 'required'
+    DISABLED = 'disabled'
+    READONLY = 'readonly'
+    CHECKED = 'checked'
+    MAX = 'max'
+    MIN = 'min'
+    PATTERN = 'pattern'
+    STEP = 'step'
+    AUTOCOMPLETE = 'autocomplete'
+    AUTOFOCUS = 'autofocus'
+    MULTIPLE = 'multiple'
+    ACCEPT = 'accept'
+    COLSPAN = 'colspan'
+    ROWSPAN = 'rowspan'
+    LANG = 'lang'
+    DIR = 'dir'
+    ONCLICK = 'onclick'
+    ONCHANGE = 'onchange'
+    ONLOAD = 'onload'
+    ONMOUSEOVER = 'onmouseover'
+    ONMOUSEOUT = 'onmouseout'
+    ONKEYDOWN = 'onkeydown'
+    ONKEYUP = 'onkeyup'
+    ONFOCUS = 'onfocus'
+    ONBLUR = 'onblur'
 
 class Pype:
-    def __init__(self, title="Pype Application", entry="./frontend/index.html", build="dev"):
+    def __init__(self, title="Pype Application", entry="./frontend/index.html", tools = True):
         """Initialize the App"""
+        os.system("")
 
         self.state = {"title": title}
         self.nodes = {}  # Stores node relationships
-        self.config = {"title": title, "entry": entry, "build": build}
+        self.hooks = {}  # Stores hooks that are called on a specific state change
+        self.config = {"title": title, "entry": entry, "tools": tools}
         self.running = False
 
     def update(self):
         """Run background tasks periodically."""
 
         for function in self.functions:
-            function(self)
+            try:
+                function(self)
+            except Exception as e:
+                self.error(str(e))
         if self.running:
             threading.Timer(0, self.update).start() 
 
@@ -29,12 +82,22 @@ class Pype:
 
         self._window = webview.create_window(title=self.config["title"], url=self.config["entry"], js_api=self)
 
-        webview.start(debug=(self.config["build"] == "dev"))
+        webview.start(debug=self.config["tools"])
 
     def set_state(self, key, value):
         """Sets a state value and updates any nodes binded to it"""
 
         self.state[key] = value
+
+        if key not in self.hooks:
+            self.hooks[key] = None #Set a None hook
+
+        if self.hooks[key] is not None:
+            try:
+                self.hooks[key](self)  # Call the hook function
+            except Exception as e:
+                self.error(str(e))
+
         if self.running:
             self.update_frontend(key, value)  
     
@@ -51,12 +114,22 @@ class Pype:
         return self.state
     
     # Stores node relationships
-    def bind(self, node_id, state_key):
+    def bind(self, node_id, state_key, attr=HTMLAttributes.INNERHTML):
         """Binds a node to a state value"""
+        self.nodes[state_key] = {"id": node_id, "attribute": attr.value}
+        print(f'\033[102m Pype \033[0m Node with id: \033[1m{node_id}\033[0m will render state: \033[1m{state_key}\033[0m with attribute: \033[1m{attr.value}\033[0m')
 
-        self.nodes[state_key] = node_id
-        print(f"Node with id: {node_id} will render state.{state_key}")
-    
+    def hook(self, state_key, function):
+        self.hooks[state_key] = function
+        print(f'\033[102m Pype \033[0m Hooked \033[1m{function.__name__}()\033[0m to state \033[1m{state_key}\033[0m')
+
+    def error(self,error_message):
+        self._window.evaluate_js(f'error("An error has occured: {error_message}",true)')
+        print(f'\033[41m Pype \033[0m An error has occured: {error_message}')
     def update_frontend(self, key, value):
+        node = self.nodes.get(key)
+        if node == None:
+            print(f'\033[43m Pype \033[0m Warning {key} doesnt have a binded UI element!')
+            return
         if self._window != None:
-            self._window.evaluate_js(f'updateElement("{self.nodes.get(key)}", "{value}")')
+            self._window.evaluate_js(f'updateElement("{node["id"]}","{node["attribute"]}", "{value}")')

@@ -19,10 +19,9 @@ function waitForPywebview() {
                 clearInterval(interval);
                 resolve();
             } else if (retries <= 0) {
+                error("Couldn't establish Pype!")
                 clearInterval(interval);
                 reject();
-                document.body.style.backgroundColor = "#fd5555";
-                document.body.innerHTML = "<h1>Couldn't not establish Pype!</h1>"
             } else {
                 console.log("Trying to create Pype!");
                 retries--;
@@ -32,10 +31,15 @@ function waitForPywebview() {
 }
 
 // Update specific element's inner HTML
-function updateElement(elementId, value) {
+function updateElement(elementId, attribute, value) {
     const element = document.getElementById(elementId);
+
     if (element) {
-        element.innerHTML = value;
+        if (attribute === "innerHTML") {
+            element.innerHTML = value;
+        } else {
+            element.setAttribute(attribute, value);
+        }
     }
 }
 
@@ -44,3 +48,35 @@ function set_state(key, value) {
     pywebview.api.set_state(key, value);
     state[key] = value;
 }
+
+function error(message, fade = false) {
+    const errorDiv = document.createElement("div");
+    errorDiv.id = "pype-error"; 
+    errorDiv.style.position = "fixed";
+    errorDiv.style.top = "0";
+    errorDiv.style.left = "0";
+    errorDiv.style.width = "100%";
+    errorDiv.style.height = "100%";
+    errorDiv.style.backgroundColor = "#fd5555";
+    errorDiv.style.color = "white";
+    errorDiv.style.display = "flex";
+    errorDiv.style.alignItems = "center";
+    errorDiv.style.justifyContent = "center";
+    errorDiv.style.fontSize = "2em";
+    errorDiv.style.transition = "1s"; 
+    errorDiv.style.opacity = "1";
+
+    errorDiv.innerHTML = `<h3>${message}</h3>`;
+
+    document.body.appendChild(errorDiv);
+
+    if (fade) {
+        setTimeout(() => {
+            errorDiv.style.opacity = "0"; 
+            setTimeout(() => {
+                document.body.removeChild(errorDiv);
+            }, 1000);
+        }, 1000);
+    }
+}
+
