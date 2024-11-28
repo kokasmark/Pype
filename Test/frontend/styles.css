@@ -1,0 +1,46 @@
+body{
+    background-color: #77dd69; 
+    font-family: monospace;
+    color: white;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    transition: 1s;
+}
+header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.icon{
+    background-color: #77dd69;
+    width: 128px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+button{
+    background-color: transparent;
+    border: 1px solid white;
+    width: 128px;
+    height: 50px;
+    color: white;
+    border-radius: 10px;
+    font-weight: bolder;
+
+    transition: 0.1s;
+    cursor: pointer;
+
+    margin: 10px;
+}
+button:hover{
+    scale: 1.1;
+}

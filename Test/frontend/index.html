@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pype App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="pype.js"></script>
+</head>
+<body>
+    <header>
+        <img class="icon" src="assets/logo.png"/>
+        <h1>Your new Pype Application is ready</h1>
+    </header>
+    
+    <div class="counter">
+        <h1>Count: <b id="count">0</b></h1>
+        <button onclick="set_state('count', (state['count'] || 0) + 1)">Increment</button>
+        <button onclick="set_state('count', (state['count'] || 0) - 1)">Decrement</button>
+    </div>
+</body>
+</html>
