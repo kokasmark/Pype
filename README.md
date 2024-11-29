@@ -1,6 +1,6 @@
 # Pype
 
-![logo](https://github.com/kokasmark/pype/blob/main/logo.png?raw=true)
+![logo](https://github.com/kokasmark/pype/blob/main/banner.png?raw=true)
 
 **Fast** and **Simple** GUI framework for Python
 
