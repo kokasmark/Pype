@@ -1,3 +1,17 @@
 prefab{
     display: none;
 }
+.destroyed{
+    animation: 0.1s destroy ease-out forwards;
+}
+@keyframes destroy {
+    0%{
+        scale: 1.2;
+    }
+    10%{
+        scale: 1;
+    }
+    100%{
+        scale: 0;
+    }
+}

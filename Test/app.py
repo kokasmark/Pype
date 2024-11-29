@@ -26,7 +26,7 @@ def changed_count(app):
         app.destroy("prefab-number",f"number-${prevCount}")
 
     prevCount = count
-    print(f'\033[102m Pype \033[0m Count changed to: {count}')
+    print(f'\033[42m Pype \033[0m Count changed to: {count}')
 
 app = pype.Pype("Testing",tools=False)
 app.set_state("count",0)

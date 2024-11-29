@@ -89,7 +89,10 @@ function destroy(prefab_id, key) {
     const element = document.querySelector(`[data-prefab-id='${prefab_id}'][data-key='${key}']`);
 
     if (element) {
-        element.remove();
+        element.classList.add('destroyed')
+        setTimeout(() => {
+            element.remove();
+        }, 100);
     } else {
         error(`Prefab with id '${prefab_id}' and key '${key}' not found.`,true);
     }

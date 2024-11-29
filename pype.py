@@ -74,7 +74,7 @@ class Pype:
     def run(self, functions=[]):
         """Start the app and background tasks."""
 
-        print('\33[102m' + ' Pype ' + '\33[0m'+' is running!')
+        print('\33[42m' + ' Pype ' + '\33[0m'+' is running!')
         self.running = True
         self.functions = functions
 
@@ -117,11 +117,11 @@ class Pype:
     def bind(self, node_id, state_key, attr=HTMLAttributes.INNERHTML):
         """Binds a node to a state value"""
         self.nodes[state_key] = {"id": node_id, "attribute": attr.value}
-        print(f'\033[102m Pype \033[0m Node with id: \033[1m{node_id}\033[0m will render state: \033[1m{state_key}\033[0m with attribute: \033[1m{attr.value}\033[0m')
+        print(f'\033[42m Pype \033[0m Node with id: \033[1m{node_id}\033[0m will render state: \033[1m{state_key}\033[0m with attribute: \033[1m{attr.value}\033[0m')
 
     def hook(self, state_key, function):
         self.hooks[state_key] = function
-        print(f'\033[102m Pype \033[0m Hooked \033[1m{function.__name__}()\033[0m to state \033[1m{state_key}\033[0m')
+        print(f'\033[42m Pype \033[0m Hooked \033[1m{function.__name__}()\033[0m to state \033[1m{state_key}\033[0m')
 
     def error(self,error_message):
         if self._window != None:
