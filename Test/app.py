@@ -21,14 +21,15 @@ def changed_count(app):
     count = app.state["count"]
 
     if(count > prevCount):
-        app.instantiate("prefab-number",f"number-${count}","prefab-parent",{"count":count, "color": f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'})
+        random_color = f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'
+        app.instantiate("prefab-number",f"number-${count}","prefab-parent",{"count":count, "color": random_color})
     elif(count < prevCount):
         app.destroy("prefab-number",f"number-${prevCount}")
 
     prevCount = count
     app.log(f'Count changed to: {count}')
 
-app = pype.Pype("Testing",tools=True)
+app = pype.Pype("Testing",tools=False)
 app.set_state("count",0)
 app.bind('count','count',HTMLAttributes.INNERHTML)
 app.hook('count',changed_count)
