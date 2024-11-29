@@ -21,12 +21,12 @@ py plumber.py new project-name
 ### Set State
 **Python:**  
 ```python
-app.set_state("count", 0)
+app.set_state("state-key", 0)
 ```
 
 **JavaScript:**  
 ```javascript
-onclick="set_state('count', (state['count'] || 0) + 1)"
+onclick="set_state('state-key', (state['state-key'] || 0) + 1)"
 ```
 
 ---
@@ -38,7 +38,7 @@ Binds a state to an element via its `key` attribute and specifies which attribut
 
 **Example:**  
 ```python
-app.bind('count', 'count', HTMLAttributes.INNERHTML)
+app.bind('state-key', 'element-key', HTMLAttributes.INNERHTML)
 ```
 
 ---
@@ -50,7 +50,7 @@ Attaches a function to a specific state change. When the state updates, the hook
 
 **Example:**  
 ```python
-app.hook('count', changed_count)
+app.hook('state-key', hooked_function)
 ```
 
 ---
@@ -64,8 +64,8 @@ Users can create prefabs that can be instantiated or destroyed by the app. Attri
 
 **Example (HTML):**  
 ```html
-<prefab id="prefab-number">
-    <div class="number" style="color: $color; border-color: $color;">$count</div>
+<prefab id="prefab-name">
+    <div class="number" style="color: $attribute-name-2; border-color: $attribute-name-2;">$attribute-name</div>
 </prefab>
 ```
 
@@ -78,7 +78,7 @@ Instantiates a prefab with a unique key under a specified parent element, passin
 
 **Example:**  
 ```python
-app.instantiate("prefab-number", f"number-{count}", "prefab-parent", {"count": count, "color": random_color})
+app.instantiate("prefab-name", f"key-prefix-{count}", "prefab-parent-id", {"attribute1": 'something', "attribute2": 0})
 ```
 
 ---
@@ -90,5 +90,15 @@ Destroys a prefab with the specified ID and key. During destruction, the prefab 
 
 **Example:**  
 ```python
-app.destroy("prefab-number", f"number-{prevCount}")
+app.destroy("prefab-name", f"key-prefix-{prevCount}")
+```
+
+### Observer
+
+**Description:**  
+Observers a state array that contains attributes for prefabs, upon its change automatically instantiates or destroys prefabs.
+
+**Example:**  
+```python
+app.observe('state-key','prefab-id','key-prefix','prefab-parent-id')
 ```

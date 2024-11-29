@@ -3,6 +3,7 @@ import threading
 import os
 import sys
 import json
+import copy
 
 from enum import Enum
 
@@ -56,7 +57,7 @@ class Pype:
         os.system("")
 
         self.state = {"title": title}
-        self.previous_state = self.state.copy()
+        self.previous_state = {"title": title}
 
         self.nodes = {}  # Stores node relationships
         self.hooks = {}  # Stores hooks that are called on a specific state change
@@ -91,14 +92,12 @@ class Pype:
 
     def set_state(self, key, value):
         """Sets a state value and updates any nodes binded to it"""
-        self.previous_state = self.state.copy()
-
         self.state[key] = value
 
-        if key not in self.hooks:
-            self.hooks[key] = None #Set a None hook
-
-        if self.hooks[key] is not None:
+        if key in self.observers:
+            self.handle_observer(self.observers[key])
+            
+        if key in self.hooks:
             try:
                 self.hooks[key](self)  # Call the hook function
             except Exception as e:
@@ -107,11 +106,22 @@ class Pype:
         if self.running:
             self.update_frontend(key, value)  
         
-    
+        self.previous_state[key] = value
     def get_state(self, key):
         """Returns a state value"""
-
-        return self.state.get(key, None)
+        value = self.state.get(key, None)
+        if value is None:
+            return None
+        else:
+            return copy.deepcopy(value)
+    
+    def get_prev_state(self, key):
+        """Returns a state value"""
+        value = self.previous_state.get(key, None)
+        if value is None:
+            return None
+        else:
+            return copy.deepcopy(value) 
     
     def init_frontend(self):
         """Renders the frontend with the initial state values"""
@@ -120,7 +130,6 @@ class Pype:
             self.update_frontend(key,self.state[key])
         return self.state
     
-    # Stores node relationships
     def bind(self, node_id, state_key, attr=HTMLAttributes.INNERHTML):
         """Binds a node to a state value"""
         self.nodes[state_key] = {"id": node_id, "attribute": attr.value}
@@ -131,13 +140,23 @@ class Pype:
         self.log(f'Hooked \033[1m{function.__name__}()\033[0m to state \033[1m{state_key}\033[0m')
 
     def observe(self, state_key, prefab_id, key_prefix, parent_id):
-        """Observers the changes in a state array where the elements are attributes for a prefab"""
+        """Observes the changes in a state array where the elements are attributes for a prefab"""
         """Handles instantiation and destroying based on the array size and content"""
 
         self.observers[state_key] = {"prefab_id": prefab_id, "key_prefix": key_prefix, "parent_id": parent_id, "attributes": state_key}
         self.log(f"\033[1m{state_key}\033[0m is observed, rendering prefab \033[1m{prefab_id}\033[0m")
 
     def handle_observer(self, observer):
+        attributes_array = self.state[observer["attributes"]]
+        prev_attributes_array = self.previous_state[observer["attributes"]]
+
+        delta = len(attributes_array) - len(prev_attributes_array)
+
+        if delta > 0:
+            self.instantiate(observer["prefab_id"],f'{observer["key_prefix"]}-{len(attributes_array)}',observer["parent_id"],attributes_array[len(attributes_array)-1])
+        if delta < 0:
+            self.destroy(observer["prefab_id"], f'{observer["key_prefix"]}-{len(prev_attributes_array)}')
+
         pass
 
     def error(self,error_message):
@@ -170,8 +189,9 @@ class Pype:
 
     def update_frontend(self, key, value):
         node = self.nodes.get(key)
-        if node == None:
+        observer = self.observers.get(key)
+        if (node is None) and (observer is None):
             self.log(f'Warning {key} doesnt have a binded UI element!','warning')
             return
-        if self._window != None:
+        if self._window != None and not (node is None):
             self._window.evaluate_js(f'updateElement("{node["id"]}","{node["attribute"]}", "{value}")')
