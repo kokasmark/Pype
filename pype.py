@@ -52,7 +52,7 @@ class HTMLAttributes(Enum):
     ONBLUR = 'onblur'
 
 class Pype:
-    def __init__(self, title="Pype Application", entry="./frontend/", tools = True):
+    def __init__(self, title="Pype Application", entry="./frontend/", width=900, height = 600,tools = True):
         """Initialize the App"""
         os.system("")
 
@@ -62,8 +62,9 @@ class Pype:
         self.nodes = {}  # Stores node relationships
         self.hooks = {}  # Stores hooks that are called on a specific state change
         self.observers = {} # Stores observers, each observer observes a state array, where prefab attributes are stored. Manages prefabs.
+        self.exposed = {} # Functions that are exposed to the app
 
-        self.config = {"title": title, "entry": entry, "tools": tools}
+        self.config = {"title": title, "entry": entry, "tools": tools, "width": width, "height":height}
         self.running = False
 
     def update(self):
@@ -86,9 +87,17 @@ class Pype:
 
         self.update()
 
-        self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self)
+        self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self,width=self.config["width"],height=self.config["height"])
 
         webview.start(debug=self.config["tools"],gui='edgechromium')
+
+    def expose(self, function):
+        """Exposes a function from the app side"""
+        self.exposed[function.__name__] = function
+
+    def call(self,name):
+        """Calls a function from the app side"""
+        self.exposed[name](self)
 
     def set_state(self, key, value):
         """Sets a state value and updates any nodes binded to it"""

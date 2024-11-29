@@ -31,16 +31,16 @@ function waitForPywebview() {
 }
 
 // Update specific element's inner HTML
-function updateElement(elementId, attribute, value) {
-    const element = document.getElementById(elementId);
+function updateElement(elementKey, attribute, value) {
+    const elements = document.querySelectorAll(`[key="${elementKey}"]`);
 
-    if (element) {
+    elements.forEach(element => {
         if (attribute === "innerHTML") {
             element.innerHTML = value;
         } else {
             element.setAttribute(attribute, value);
         }
-    }
+    });
 }
 
 // Set state from UI interaction
@@ -65,7 +65,7 @@ function instantiate(prefab_id, key, parent_id, attr) {
     }
 
     let prefabContent = prefab.innerHTML;
-    
+
     for (const [name, value] of Object.entries(attr)) { 
         const placeholder = new RegExp(`\\$${name}`, 'g'); 
         prefabContent = prefabContent.replace(placeholder, value); 
@@ -73,7 +73,7 @@ function instantiate(prefab_id, key, parent_id, attr) {
 
     const container = document.createElement('div');
     container.setAttribute('data-prefab-id', prefab_id);
-    container.setAttribute('data-key', key);
+    container.setAttribute('key', key);
 
     const contentContainer = document.createElement('div');
     contentContainer.innerHTML = prefabContent;
@@ -85,7 +85,7 @@ function instantiate(prefab_id, key, parent_id, attr) {
 
 //Destroys a targeted prefab
 function destroy(prefab_id, key) {
-    const element = document.querySelector(`[data-prefab-id='${prefab_id}'][data-key='${key}']`);
+    const element = document.querySelector(`[data-prefab-id='${prefab_id}'][key='${key}']`);
 
     if (element) {
         element.classList.add('destroyed')

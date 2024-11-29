@@ -16,6 +16,26 @@ Good for fast visualization or **lightweight applications**
 py plumber.py new project-name
 ```
 
+## Expose
+
+**Description:**  
+Exposes a function to the frontend side to be called
+
+**Example:**  
+```python
+app.expose(functionFromPython)
+```
+
+## Call
+
+**Description:**  
+Calls an exposed function from the frontend
+
+**Example:**  
+```javascript
+onclick="call('functionFromPython')"
+```
+
 ## State Management
 
 ### Set State

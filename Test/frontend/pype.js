@@ -43,6 +43,11 @@ function updateElement(elementKey, attribute, value) {
     });
 }
 
+//Calls a function on the other side
+function call(name){
+    pywebview.api.call(name)
+}
+
 // Set state from UI interaction
 function set_state(key, value) {
     pywebview.api.set_state(key, value);
