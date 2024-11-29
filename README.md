@@ -10,6 +10,12 @@ Good for fast visualization or **lightweight applications**
 
 # Documentation
 
+## Project creation
+
+```bash
+py plumber.py new project-name
+```
+
 ## State Management
 
 ### Set State
