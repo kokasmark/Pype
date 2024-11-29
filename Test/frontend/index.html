@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Pype App</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Pype libraries -->
+    <link rel="stylesheet" href="pype.css">
     <script src="pype.js"></script>
 </head>
 <body>
@@ -17,5 +20,15 @@
         <button onclick="set_state('count', (state['count'] || 0) + 1)">Increment</button>
         <button onclick="set_state('count', (state['count'] || 0) - 1)">Decrement</button>
     </div>
+
+    <div id="prefab-parent">
+        
+    </div>
+
+
+    <prefab id="prefab-number">
+        <div class="number">$0</div>
+    </prefab>
+
 </body>
 </html>

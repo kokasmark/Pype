@@ -124,8 +124,22 @@ class Pype:
         print(f'\033[102m Pype \033[0m Hooked \033[1m{function.__name__}()\033[0m to state \033[1m{state_key}\033[0m')
 
     def error(self,error_message):
-        self._window.evaluate_js(f'error("An error has occured: {error_message}",true)')
+        if self._window != None:
+            self._window.evaluate_js(f'error("An error has occured: {error_message}",true)')
         print(f'\033[41m Pype \033[0m An error has occured: {error_message}')
+
+    def instantiate(self,prefab_id,key,parent,attr):
+        """Copies and Instantiates a prefab from the html, setting its parent and attributes in order"""
+        """With the attributes you can give its children ids so they react to state changes"""
+
+        if self._window != None:
+            self._window.evaluate_js(f'instantiate("{prefab_id}","{key}","{parent}", "{attr}")')
+
+    def destroy(self,prefab_id,key):
+        """Destroys an instantiated prefab"""
+        if self._window != None:
+            self._window.evaluate_js(f'destroy("{prefab_id}","{key}")')
+
     def update_frontend(self, key, value):
         node = self.nodes.get(key)
         if node == None:

@@ -44,3 +44,33 @@ button{
 button:hover{
     scale: 1.1;
 }
+#prefab-parent{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.number{
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: bolder;
+    border: 3px solid white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: 0.3s number-pop ease-in;
+}
+@keyframes number-pop {
+    0%{
+        scale: 0;
+    }
+    90%{
+        scale: 1.2;
+    }
+    100%{
+        scale: 1;
+    }
+}

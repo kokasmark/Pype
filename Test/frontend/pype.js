@@ -49,6 +49,52 @@ function set_state(key, value) {
     state[key] = value;
 }
 
+//Instantiates a prefab defined in the html
+function instantiate(prefab_id, key, parent_id, attr) {
+    const prefab = document.querySelector(`prefab#${prefab_id}`);
+    const parent = document.getElementById(parent_id);
+    
+    if (!prefab) {
+        error(`Prefab with id '${prefab_id}' not found.`, true);
+        return;
+    }
+    
+    if (!parent) {
+        error(`Parent with id '${parent_id}' not found.`, true);
+        return;
+    }
+
+    let prefabContent = prefab.innerHTML;
+    
+    attr = JSON.parse(attr);
+    attr.forEach((value, index) => {
+        const placeholder = new RegExp(`\\$${index}`, 'g');
+        prefabContent = prefabContent.replace(placeholder, value);
+    });
+
+    const container = document.createElement('div');
+    container.setAttribute('data-prefab-id', prefab_id);
+    container.setAttribute('data-key', key);
+
+    const contentContainer = document.createElement('div');
+    contentContainer.innerHTML = prefabContent;
+
+    container.appendChild(contentContainer);
+
+    parent.appendChild(container);
+}
+
+//Destroys a targeted prefab
+function destroy(prefab_id, key) {
+    const element = document.querySelector(`[data-prefab-id='${prefab_id}'][data-key='${key}']`);
+
+    if (element) {
+        element.remove();
+    } else {
+        error(`Prefab with id '${prefab_id}' and key '${key}' not found.`,true);
+    }
+}
+
 function error(message, fade = false) {
     const errorDiv = document.createElement("div");
     errorDiv.id = "pype-error"; 
