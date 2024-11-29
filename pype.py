@@ -56,8 +56,12 @@ class Pype:
         os.system("")
 
         self.state = {"title": title}
+        self.previous_state = self.state.copy()
+
         self.nodes = {}  # Stores node relationships
         self.hooks = {}  # Stores hooks that are called on a specific state change
+        self.observers = {} # Stores observers, each observer observes a state array, where prefab attributes are stored. Manages prefabs.
+
         self.config = {"title": title, "entry": entry, "tools": tools}
         self.running = False
 
@@ -75,7 +79,7 @@ class Pype:
     def run(self, functions=[]):
         """Start the app and background tasks."""
 
-        self.log(' is running!')
+        self.log('is running!')
         self.running = True
         self.functions = functions
 
@@ -87,6 +91,7 @@ class Pype:
 
     def set_state(self, key, value):
         """Sets a state value and updates any nodes binded to it"""
+        self.previous_state = self.state.copy()
 
         self.state[key] = value
 
@@ -101,6 +106,7 @@ class Pype:
 
         if self.running:
             self.update_frontend(key, value)  
+        
     
     def get_state(self, key):
         """Returns a state value"""
@@ -118,11 +124,21 @@ class Pype:
     def bind(self, node_id, state_key, attr=HTMLAttributes.INNERHTML):
         """Binds a node to a state value"""
         self.nodes[state_key] = {"id": node_id, "attribute": attr.value}
-        self.log(f'Node with id: \033[1m{node_id}\033[0m will render state: \033[1m{state_key}\033[0m with attribute: \033[1m{attr.value}\033[0m')
+        self.log(f'Nodes with key: \033[1m{node_id}\033[0m will render state: \033[1m{state_key}\033[0m with attribute: \033[1m{attr.value}\033[0m')
 
     def hook(self, state_key, function):
         self.hooks[state_key] = function
         self.log(f'Hooked \033[1m{function.__name__}()\033[0m to state \033[1m{state_key}\033[0m')
+
+    def observe(self, state_key, prefab_id, key_prefix, parent_id):
+        """Observers the changes in a state array where the elements are attributes for a prefab"""
+        """Handles instantiation and destroying based on the array size and content"""
+
+        self.observers[state_key] = {"prefab_id": prefab_id, "key_prefix": key_prefix, "parent_id": parent_id, "attributes": state_key}
+        self.log(f"\033[1m{state_key}\033[0m is observed, rendering prefab \033[1m{prefab_id}\033[0m")
+
+    def handle_observer(self, observer):
+        pass
 
     def error(self,error_message):
         if self._window != None:

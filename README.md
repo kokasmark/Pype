@@ -34,7 +34,7 @@ onclick="set_state('count', (state['count'] || 0) + 1)"
 ## Binds
 
 **Description:**  
-Binds a state to an element via its ID and specifies which attribute should be updated upon a state change.
+Binds a state to an element via its `key` attribute and specifies which attribute should be updated upon a state change.
 
 **Example:**  
 ```python

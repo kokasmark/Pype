@@ -10,15 +10,13 @@ import pype
 from pype import HTMLAttributes
 import random
 
-prevCount = 0
 def updatingFunc(app):
     #this function runs on a background thread
     pass
 
 def changed_count(app):
-    global prevCount
-
     count = app.state["count"]
+    prevCount = app.previous_state["count"]
 
     if(count > prevCount):
         random_color = f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'
@@ -27,7 +25,7 @@ def changed_count(app):
         app.destroy("prefab-number",f"number-${prevCount}")
 
     prevCount = count
-    app.log(f'Count changed to: {count}')
+    app.log(f'Count changed to {count} from {prevCount}')
 
 app = pype.Pype("Testing",tools=False)
 app.set_state("count",0)
