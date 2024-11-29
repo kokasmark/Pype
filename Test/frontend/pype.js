@@ -66,11 +66,10 @@ function instantiate(prefab_id, key, parent_id, attr) {
 
     let prefabContent = prefab.innerHTML;
     
-    attr = JSON.parse(attr);
-    attr.forEach((value, index) => {
-        const placeholder = new RegExp(`\\$${index}`, 'g');
-        prefabContent = prefabContent.replace(placeholder, value);
-    });
+    for (const [name, value] of Object.entries(attr)) { 
+        const placeholder = new RegExp(`\\$${name}`, 'g'); 
+        prefabContent = prefabContent.replace(placeholder, value); 
+    }
 
     const container = document.createElement('div');
     container.setAttribute('data-prefab-id', prefab_id);
