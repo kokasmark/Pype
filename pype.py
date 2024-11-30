@@ -4,6 +4,10 @@ import os
 import sys
 import json
 import copy
+import win32gui
+import win32con
+import win32api
+import ctypes
 
 from enum import Enum
 
@@ -67,6 +71,8 @@ class Pype:
         self.config = {"title": title, "entry": entry, "tools": tools, "width": width, "height":height}
         self.running = False
 
+        webview.DRAG_REGION_SELECTOR = ".window-handle"
+
     def update(self):
         """Run background tasks periodically."""
 
@@ -76,7 +82,7 @@ class Pype:
                     function(self)
                 except Exception as e:
                     self.log(str(e),'error')
-                    
+
         threading.Timer(0, self.update).start() 
 
     def run(self, functions=[], pages=["index.html"]):
@@ -88,9 +94,24 @@ class Pype:
 
         self.update()
         
-        self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self,width=self.config["width"],height=self.config["height"])
+        self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self,
+                                             width=self.config["width"],height=self.config["height"],
+                                             frameless=True,draggable=True,easy_drag=True)
         self.running = True
+
         webview.start(debug=self.config["tools"],gui='edgechromium')
+
+    def set_window_icon(self,favicon_path):
+        window_handle = ctypes.windll.user32.FindWindowW(None, self.config["title"])  # Replace with your window title
+
+        if not window_handle:
+            self.log("Window not found!","warning")
+            return
+        
+        icon_handle = win32gui.LoadImage(None, favicon_path, win32con.IMAGE_ICON, 32, 32, win32con.LR_LOADFROMFILE)
+
+        win32gui.SendMessage(window_handle, win32con.WM_SETICON, win32con.ICON_BIG, icon_handle)
+        win32gui.SendMessage(window_handle, win32con.WM_SETICON, win32con.ICON_SMALL, icon_handle)
 
     def load_page(self, index):
         """Loads a page from the exposed pages, the unloaded page gets .unloaded for exit animations, and .loaded for the loaded for entry animations"""

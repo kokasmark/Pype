@@ -4,6 +4,17 @@ prefab{
 body{
     animation: 0.3s load ease-out forwards;
 }
+
+.window-handle{
+    position: absolute;
+    top: 0%;
+    width: 100%;
+    left: 0%;
+    height: 20px;
+    
+    background-color: white;
+}
+
 .destroyed{
     animation: 0.1s destroy ease-out forwards;
 }
