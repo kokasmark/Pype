@@ -5,6 +5,7 @@ import shutil
 import os
 
 def main():
+    os.system("")
     if len(sys.argv) != 3:
         print("Usage: plumber.py new <new_project_name>")
         sys.exit(1)

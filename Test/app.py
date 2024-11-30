@@ -12,6 +12,8 @@ import random
 
 def updatingFunc(app):
     #this function runs on a background thread
+    # count = app.get_state("count")
+    # app.set_state("count",count+1)
     pass
 
 def nextPage(app):

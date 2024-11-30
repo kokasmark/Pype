@@ -70,26 +70,26 @@ class Pype:
     def update(self):
         """Run background tasks periodically."""
 
-        for function in self.functions:
-            try:
-                function(self)
-            except Exception as e:
-                self.log(str(e),'error')
         if self.running:
-            threading.Timer(0, self.update).start() 
+            for function in self.functions:
+                try:
+                    function(self)
+                except Exception as e:
+                    self.log(str(e),'error')
+                    
+        threading.Timer(0, self.update).start() 
 
     def run(self, functions=[], pages=["index.html"]):
         """Start the app and background tasks."""
 
         self.log('is running!')
-        self.running = True
         self.functions = functions
         self.pages = pages
 
         self.update()
-
+        
         self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self,width=self.config["width"],height=self.config["height"])
-
+        self.running = True
         webview.start(debug=self.config["tools"],gui='edgechromium')
 
     def load_page(self, index):
