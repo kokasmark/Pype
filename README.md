@@ -134,3 +134,8 @@ app.run([updatingFunc],["index.html","new-page.html"]) #Expose pages to app
 
 app.load_page(1)
 ```
+
+### Custom Window Handle
+
+**Description:**  
+All pages has a `.window-handle` div at top. This area is customizable too for making it fit with your app.

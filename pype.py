@@ -113,6 +113,13 @@ class Pype:
         win32gui.SendMessage(window_handle, win32con.WM_SETICON, win32con.ICON_BIG, icon_handle)
         win32gui.SendMessage(window_handle, win32con.WM_SETICON, win32con.ICON_SMALL, icon_handle)
 
+    def window_event(self,event):
+        if event == 'minimize':
+            webview.windows[0].minimize()
+        if event == 'close':
+            webview.windows[0].destroy()
+        
+
     def load_page(self, index):
         """Loads a page from the exposed pages, the unloaded page gets .unloaded for exit animations, and .loaded for the loaded for entry animations"""
         self._window.evaluate_js(f"unload({index})")# Pass the next page index to the unload so it can call load_page_immidiate after exit animations

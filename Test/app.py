@@ -40,6 +40,7 @@ def changed_count(app):
     app.log(f'Count changed to {count} from {prevCount}')
 
 app = pype.Pype("Testing",tools=False)
+
 app.set_state("count",0)
 app.set_state("numbers", [])
 app.bind('count','count',HTMLAttributes.INNERHTML)
