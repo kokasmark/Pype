@@ -1,8 +1,14 @@
 prefab{
     display: none;
 }
+body{
+    animation: 0.3s load ease-out forwards;
+}
 .destroyed{
     animation: 0.1s destroy ease-out forwards;
+}
+.unloaded{
+    animation: 0.3s unload ease-out forwards !important;
 }
 @keyframes destroy {
     0%{
@@ -13,5 +19,21 @@ prefab{
     }
     100%{
         scale: 0;
+    }
+}
+@keyframes unload {
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+@keyframes load {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
     }
 }

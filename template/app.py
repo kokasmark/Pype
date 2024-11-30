@@ -14,6 +14,12 @@ def updatingFunc(app):
     #this function runs on a background thread
     pass
 
+def nextPage(app):
+    app.load_page(1)
+
+def functionFromPython(app):
+    app.log("I was called from the frontend side!")
+
 def changed_count(app):
     count = app.get_state("count")
     prevCount = app.get_prev_state("count")
@@ -37,4 +43,7 @@ app.set_state("numbers", [])
 app.bind('count','count',HTMLAttributes.INNERHTML)
 app.hook('count',changed_count)
 app.observe('numbers','prefab-number','number','prefab-parent')
-app.run([updatingFunc])
+
+app.expose(functionFromPython)
+app.expose(nextPage)
+app.run([updatingFunc],["index.html","new-page.html"])

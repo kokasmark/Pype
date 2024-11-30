@@ -78,18 +78,26 @@ class Pype:
         if self.running:
             threading.Timer(0, self.update).start() 
 
-    def run(self, functions=[]):
+    def run(self, functions=[], pages=["index.html"]):
         """Start the app and background tasks."""
 
         self.log('is running!')
         self.running = True
         self.functions = functions
+        self.pages = pages
 
         self.update()
 
         self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self,width=self.config["width"],height=self.config["height"])
 
         webview.start(debug=self.config["tools"],gui='edgechromium')
+
+    def load_page(self, index):
+        """Loads a page from the exposed pages, the unloaded page gets .unloaded for exit animations, and .loaded for the loaded for entry animations"""
+        self._window.evaluate_js(f"unload({index})")# Pass the next page index to the unload so it can call load_page_immidiate after exit animations
+
+    def load_page_immidiate(self,index):
+        self._window.load_url(self.pages[index])
 
     def expose(self, function):
         """Exposes a function from the app side"""
@@ -116,6 +124,7 @@ class Pype:
             self.update_frontend(key, value)  
         
         self.previous_state[key] = value
+
     def get_state(self, key):
         """Returns a state value"""
         value = self.state.get(key, None)

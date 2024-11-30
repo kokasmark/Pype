@@ -48,6 +48,14 @@ function call(name){
     pywebview.api.call(name)
 }
 
+//Unloads current page after exit animation it calls load_page_immidiate
+function unload(index){
+    document.body.classList.add('unloaded');
+    setTimeout(() => {
+        pywebview.api.load_page_immidiate(index)
+    }, 300);
+}
+
 // Set state from UI interaction
 function set_state(key, value) {
     pywebview.api.set_state(key, value);

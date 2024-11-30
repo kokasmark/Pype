@@ -116,9 +116,21 @@ app.destroy("prefab-name", f"key-prefix-{prevCount}")
 ### Observer
 
 **Description:**  
-Observers a state array that contains attributes for prefabs, upon its change automatically instantiates or destroys prefabs.
+Observes a state array that contains attributes for prefabs, upon its change automatically instantiates or destroys prefabs.
 
 **Example:**  
 ```python
 app.observe('state-key','prefab-id','key-prefix','prefab-parent-id')
+```
+
+### Load Page
+
+**Description:**  
+Loads a given page exposed to the run function. `.unloaded` class for the current page for exit animations.
+
+**Example:**  
+```python
+app.run([updatingFunc],["index.html","new-page.html"]) #Expose pages to app
+
+app.load_page(1)
 ```
