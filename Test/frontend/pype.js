@@ -61,9 +61,13 @@ function unload(index){
 }
 
 // Set state from UI interaction
-function set_state(key, value) {
-    pywebview.api.set_state(key, value);
-    state[key] = value;
+function set_state(key, value,type = "set") {
+    pywebview.api.set_state(key, value,type).then(() => {
+        pywebview.api.get_state(key).then(new_state => {
+            state[key] = new_state;
+        });
+    });
+    
 }
 
 //Instantiates a prefab defined in the html

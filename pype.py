@@ -125,6 +125,7 @@ class Pype:
         self._window.evaluate_js(f"unload({index})")# Pass the next page index to the unload so it can call load_page_immidiate after exit animations
 
     def load_page_immidiate(self,index):
+        """Loads a page without animation"""
         self._window.load_url(self.pages[index])
 
     def expose(self, function):
@@ -135,9 +136,29 @@ class Pype:
         """Calls a function from the app side"""
         self.exposed[name](self)
 
-    def set_state(self, key, value):
+    def set_state(self, key, value,type="set"):
         """Sets a state value and updates any nodes binded to it"""
-        self.state[key] = value
+        """set = Immidiatly sets the value, inc = increments by or appends the value, dec = decrements by or deletes the value"""
+
+        new_state = self.state.get(key,value)
+
+        if type == "set":
+            new_state = value
+
+        elif type == "inc":
+            if isinstance(new_state, list):
+                new_state.append(value)
+            else:
+                new_state += value
+
+        elif type == "dec":
+            if isinstance(new_state, list):
+                if value in new_state:
+                    new_state.remove(value)
+            else:
+                new_state -= value
+
+        self.state[key] = copy.deepcopy(new_state)
 
         if key in self.observers:
             self.handle_observer(self.observers[key])
@@ -149,9 +170,9 @@ class Pype:
                 self.log(str(e),"error")
 
         if self.running:
-            self.update_frontend(key, value)  
+            self.update_frontend(key, new_state)  
         
-        self.previous_state[key] = value
+        self.previous_state[key] = new_state
 
     def get_state(self, key):
         """Returns a state value"""

@@ -39,9 +39,14 @@ onclick="call('functionFromPython')"
 ## State Management
 
 ### Set State
+Sets a state value.
+- **Set** Immidietly sets a value
+- **Inc** Increments by or appends the value 
+- **Dec** Decrements by or deletes the value
+  
 **Python:**  
 ```python
-app.set_state("state-key", 0)
+app.set_state("state-key", 0,type = "set")
 ```
 
 **JavaScript:**  
