@@ -51,7 +51,7 @@ app.set_state("state-key", 0,type = "set")
 
 **JavaScript:**  
 ```javascript
-onclick="set_state('state-key', (state['state-key'] || 0) + 1)"
+onclick="set_state('state-key', 1,'inc')"
 ```
 
 ---
