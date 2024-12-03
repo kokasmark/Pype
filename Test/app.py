@@ -27,14 +27,11 @@ def changed_count(app):
 
     if(count > prevCount):
         app.state["numbers"].append({"count":count, "color": f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'})
-
-        app.push(["numbers"])
     elif(count < prevCount):
         app.state["numbers"].pop()
-        
-        app.push(["numbers"])
 
-    app.log(f'Count changed to {count} from {prevCount}')
+    app.log(f'Count changed to {count} from {prevCount}')    
+    app.push(["numbers"])
 
 app = pype.Pype("Testing",tools=False)
 

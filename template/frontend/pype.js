@@ -43,6 +43,10 @@ function updateElement(elementKey, attribute, value) {
     });
 }
 
+function window_event(event){
+    pywebview.api.window_event(event)
+}
+
 //Calls a function on the other side
 function call(name){
     pywebview.api.call(name)
@@ -56,10 +60,21 @@ function unload(index){
     }, 300);
 }
 
+// Applies and finalizes state changes calling observers and hooks
+function push(keys) {
+    pywebview.api.push(keys,state).then(() => {
+        keys.forEach(key => {
+            pull(key);
+        });
+    }); 
+}
+
 // Set state from UI interaction
-function set_state(key, value) {
-    pywebview.api.set_state(key, value);
-    state[key] = value;
+function pull(key) {
+    pywebview.api.pull(key).then(value => {
+        state[key] = value;
+        return value;
+    });
 }
 
 //Instantiates a prefab defined in the html

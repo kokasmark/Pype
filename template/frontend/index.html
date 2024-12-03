@@ -10,6 +10,10 @@
     <script src="pype.js"></script>
 </head>
 <body>
+    <div class="window-handle">
+        <p onclick="window_event('minimize')">_</p>
+        <p onclick="window_event('close')">X</p>
+    </div>
     <header>
         <img class="icon" src="assets/logo.png"/>
         <h1>Your new Pype Application is ready</h1>
@@ -17,8 +21,8 @@
     
     <div class="counter">
         <h1>Count: <b key="count">0</b></h1>
-        <button onclick="set_state('count', (state['count'] || 0) + 1)">Increment</button>
-        <button onclick="set_state('count', (state['count'] || 0) - 1)">Decrement</button>
+        <button onclick="state['count']++; push(['count']);console.log(state)">Increment</button>
+        <button onclick="state['count']--; push(['count'])">Decrement</button>
     </div>
 
     <div id="prefab-parent">
