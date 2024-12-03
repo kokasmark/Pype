@@ -39,8 +39,8 @@ onclick="call('functionFromPython')"
 ## State Management
 
 ### Push
-Applies and finalizes state changes calling observers and hooks. Batched state updates, and cleaner state updates.
-This may seem a bit more error prone but this way state updating is strongly on demand.
+Applies and finalizes state changes by triggering observers and hooks. Updates are batched for efficiency, ensuring cleaner and more controlled state management. 
+While this approach requires careful handling, it offers on-demand state updates, reducing unnecessary processing.
 
 **Python:**  
 ```python
@@ -54,7 +54,7 @@ app.push(["numbers","some other key","...another"]) #finalizes state change
 onclick="state['count']++; push(['count'])"
 ```
 
-### Push
+### Pull
 Gets a state values deep copied value, for other usage then just immidietly setting state.
 
 **Python:**  
