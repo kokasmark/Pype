@@ -136,46 +136,30 @@ class Pype:
         """Calls a function from the app side"""
         self.exposed[name](self)
 
-    def set_state(self, key, value,type="set"):
-        """Sets a state value and updates any nodes binded to it"""
-        """set = Immidiatly sets the value, inc = increments by or appends the value, dec = decrements by or deletes the value"""
+    def push(self, keys,state=None):
+        """Applies and finalizes state changes calling observers and hooks"""
 
-        new_state = self.state.get(key,value)
+        for key in keys:
+            if state is not None:
+                self.state[key] = state[key] # State from frontend
 
-        if type == "set":
-            new_state = value
-
-        elif type == "inc":
-            if isinstance(new_state, list):
-                new_state.append(value)
-            else:
-                new_state += value
-
-        elif type == "dec":
-            if isinstance(new_state, list):
-                if value in new_state:
-                    new_state.remove(value)
-            else:
-                new_state -= value
-
-        self.state[key] = copy.deepcopy(new_state)
-
-        if key in self.observers:
-            self.handle_observer(self.observers[key])
+            if key in self.observers:
+                self.handle_observer(self.observers[key])
             
-        if key in self.hooks:
-            try:
-                self.hooks[key](self)  # Call the hook function
-            except Exception as e:
-                self.log(str(e),"error")
+            if key in self.hooks:
+                try:
+                    self.hooks[key](self)  # Call the hook function
+                except Exception as e:
+                    self.log(str(e),"error")
 
-        if self.running:
-            self.update_frontend(key, new_state)  
-        
-        self.previous_state[key] = new_state
+            if self.running:
+                self.update_frontend(key, self.state[key]) 
 
-    def get_state(self, key):
-        """Returns a state value"""
+            self.previous_state[key] = copy.deepcopy(self.state.get(key,None))
+
+    def pull(self, key):
+        """Returns a state value's deep copy"""
+
         value = self.state.get(key, None)
         if value is None:
             return None

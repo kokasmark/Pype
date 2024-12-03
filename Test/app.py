@@ -12,8 +12,7 @@ import random
 
 def updatingFunc(app):
     #this function runs on a background thread
-    # count = app.get_state("count")
-    # app.set_state("count",count+1)
+
     pass
 
 def nextPage(app):
@@ -23,22 +22,26 @@ def functionFromPython(app):
     app.log("I was called from the frontend side!")
 
 def changed_count(app):
-    count = app.get_state("count")
-    prevCount = app.get_prev_state("count")
+    count = app.state["count"]
+    prevCount = app.previous_state["count"]
 
     if(count > prevCount):
-        random_color = f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'
-        attr = {"count":count, "color": random_color}
-        app.set_state("numbers",attr,'inc')
+        app.state["numbers"].append({"count":count, "color": f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'})
+
+        app.push(["numbers"])
     elif(count < prevCount):
-        app.set_state("numbers", app.get_state("numbers")[prevCount-1],'dec')
+        app.state["numbers"].pop()
+        
+        app.push(["numbers"])
 
     app.log(f'Count changed to {count} from {prevCount}')
 
 app = pype.Pype("Testing",tools=False)
 
-app.set_state("count",0)
-app.set_state("numbers", [])
+app.state["count"] = 0
+app.state["numbers"] = []
+
+app.push(["count","numbers"])
 
 app.bind('count','count',HTMLAttributes.INNERHTML)
 app.hook('count',changed_count)

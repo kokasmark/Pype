@@ -21,8 +21,8 @@
     
     <div class="counter">
         <h1>Count: <b key="count">0</b></h1>
-        <button onclick="set_state('count', 1,'inc')">Increment</button>
-        <button onclick="set_state('count', 1,'dec')">Decrement</button>
+        <button onclick="state['count']++; push(['count']);console.log(state)">Increment</button>
+        <button onclick="state['count']--; push(['count'])">Decrement</button>
     </div>
 
     <div id="prefab-parent">

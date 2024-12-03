@@ -60,14 +60,21 @@ function unload(index){
     }, 300);
 }
 
-// Set state from UI interaction
-function set_state(key, value,type = "set") {
-    pywebview.api.set_state(key, value,type).then(() => {
-        pywebview.api.get_state(key).then(new_state => {
-            state[key] = new_state;
+// Applies and finalizes state changes calling observers and hooks
+function push(keys) {
+    pywebview.api.push(keys,state).then(() => {
+        keys.forEach(key => {
+            pull(key);
         });
+    }); 
+}
+
+// Set state from UI interaction
+function pull(key) {
+    pywebview.api.pull(key).then(value => {
+        state[key] = value;
+        return value;
     });
-    
 }
 
 //Instantiates a prefab defined in the html

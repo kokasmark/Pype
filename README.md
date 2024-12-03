@@ -38,22 +38,34 @@ onclick="call('functionFromPython')"
 
 ## State Management
 
-### Set State
-Sets a state value.
-- **Set** Immidietly sets a value
-- **Inc** Increments by or appends the value 
-- **Dec** Decrements by or deletes the value
-  
+### Push
+Applies and finalizes state changes calling observers and hooks. Batched state updates, and cleaner state updates.
+This may seem a bit more error prone but this way state updating is strongly on demand.
+
 **Python:**  
 ```python
-app.set_state("state-key", 0,type = "set")
+app.state["numbers"].append(value)
+        
+app.push(["numbers","some other key","...another"]) #finalizes state change
 ```
 
 **JavaScript:**  
 ```javascript
-onclick="set_state('state-key', 1,'inc')"
+onclick="state['count']++; push(['count'])"
 ```
 
+### Push
+Gets a state values deep copied value, for other usage then just immidietly setting state.
+
+**Python:**  
+```python
+app.pull("count")
+```
+
+**JavaScript:**  
+```javascript
+onclick="alert(pull('count'))"
+```
 ---
 
 ## Binds
