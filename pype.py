@@ -73,17 +73,19 @@ class Pype:
 
         webview.DRAG_REGION_SELECTOR = ".window-handle"
 
+    def updating_func_container(self,function):
+        while self.running:
+            function(self)
     def update(self):
-        """Run background tasks periodically."""
+        """Run background tasks."""
+        for function in self.functions:
+            self.log(f'\033[1m{function.__name__} \033[0m will run on a separate thread.')
+            try:
+                threading.Thread(target=self.updating_func_container, args=(function,),daemon=True, name=f'{function.__name__} Thread').start()
+            except Exception as e:
+                self.log(str(e),'error')
 
-        if self.running:
-            for function in self.functions:
-                try:
-                    function(self)
-                except Exception as e:
-                    self.log(str(e),'error')
-
-        threading.Timer(0, self.update).start() 
+        
 
     def run(self, functions=[], pages=["index.html"]):
         """Start the app and background tasks."""
@@ -91,13 +93,12 @@ class Pype:
         self.log('is running!')
         self.functions = functions
         self.pages = pages
-
-        self.update()
         
         self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self,
                                              width=self.config["width"],height=self.config["height"],
                                              frameless=True,draggable=True,easy_drag=True)
         self.running = True
+        self.update()
 
         webview.start(debug=self.config["tools"],gui='edgechromium')
 
@@ -118,6 +119,7 @@ class Pype:
             webview.windows[0].minimize()
         if event == 'close':
             webview.windows[0].destroy()
+            self.running = False
         
 
     def load_page(self, index):
