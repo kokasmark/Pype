@@ -9,17 +9,7 @@ sys.path.insert(0, parent_dir)
 import pype
 from pype import HTMLAttributes
 import random
-
-def updatingFunc(app):
-    #this function runs on a background thread
-
-    pass
-
-def nextPage(app):
-    app.load_page(1)
-
-def functionFromPython(app):
-    app.log("I was called from the frontend side!")
+import numpy as np
 
 def changed_count(app):
     count = app.state["count"]
@@ -41,9 +31,8 @@ app.state["numbers"] = []
 app.push(["count","numbers"])
 
 app.bind('count','count',HTMLAttributes.INNERHTML)
+
 app.hook('count',changed_count)
 app.observe('numbers','prefab-number','number','prefab-parent')
 
-app.expose(functionFromPython)
-app.expose(nextPage)
-app.run([updatingFunc],["index.html","new-page.html"])
+app.run([],["index.html"])

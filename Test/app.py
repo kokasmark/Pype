@@ -9,11 +9,14 @@ sys.path.insert(0, parent_dir)
 import pype
 from pype import HTMLAttributes
 import random
+import numpy as np
 
-def updatingFunc(app):
+def generateImage(app):
     #this function runs on a background thread
-    # app.state["count"]+=1
-    # app.push(["count"])
+
+    noise = np.random.randint(0, 256, (128, 128, 3), dtype=np.uint8)
+    app.state["image"] = pype.PypeImage(noise).base64
+    app.push(["image"])
     pass
 
 def nextPage(app):
@@ -42,9 +45,11 @@ app.state["numbers"] = []
 app.push(["count","numbers"])
 
 app.bind('count','count',HTMLAttributes.INNERHTML)
+app.bind('image', 'image',HTMLAttributes.SRC)
+
 app.hook('count',changed_count)
 app.observe('numbers','prefab-number','number','prefab-parent')
 
 app.expose(functionFromPython)
 app.expose(nextPage)
-app.run([updatingFunc],["index.html","new-page.html"])
+app.run([generateImage],["index.html","new-page.html"])

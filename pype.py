@@ -8,8 +8,19 @@ import win32gui
 import win32con
 import win32api
 import ctypes
+import time
+
+import base64
+from io import BytesIO
+from PIL import Image
 
 from enum import Enum
+
+class PypeImage:
+    def __init__(self, data,format="PNG"):
+        buffer = BytesIO()
+        Image.fromarray(data.astype('uint8')).save(buffer, format=format)
+        self.base64 = f"data:image/{format.lower()};base64,{base64.b64encode(buffer.getvalue()).decode()}"
 
 class HTMLAttributes(Enum):
     # Common attributes
@@ -73,21 +84,34 @@ class Pype:
 
         webview.DRAG_REGION_SELECTOR = ".window-handle"
 
-    def updating_func_container(self,function):
+    def updating_func_container(self, function):
+        target_frame_duration = 1 / self.target_fps  # Calculate frame duration
+        
         while self.running:
+            start_time = time.time()
             function(self)
+
+            elapsed_time = time.time() - start_time
+            sleep_time = target_frame_duration - elapsed_time
+            
+            if sleep_time > 0:
+                time.sleep(sleep_time)
+    
     def update(self):
         """Run background tasks."""
         for function in self.functions:
             self.log(f'\033[1m{function.__name__} \033[0m will run on a separate thread.')
             try:
-                threading.Thread(target=self.updating_func_container, args=(function,),daemon=True, name=f'{function.__name__} Thread').start()
+                threading.Thread(
+                    target=self.updating_func_container, 
+                    args=(function,),
+                    daemon=True, 
+                    name=f'{function.__name__} Thread'
+                ).start()
             except Exception as e:
-                self.log(str(e),'error')
+                self.log(str(e), 'error')
 
-        
-
-    def run(self, functions=[], pages=["index.html"]):
+    def run(self, functions=[], pages=["index.html"], target=60):
         """Start the app and background tasks."""
 
         self.log('is running!')
@@ -98,6 +122,8 @@ class Pype:
                                              width=self.config["width"],height=self.config["height"],
                                              frameless=True,draggable=True,easy_drag=True)
         self.running = True
+        self.target_fps = target
+
         self.update()
 
         webview.start(debug=self.config["tools"],gui='edgechromium')
