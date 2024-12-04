@@ -84,26 +84,37 @@ class Pype:
 
         webview.DRAG_REGION_SELECTOR = ".window-handle"
 
-    def updating_func_container(self, function):
-        target_frame_duration = 1 / self.target_fps  # Calculate frame duration
+    def fps(self):
+        if not hasattr(self, "_previous_time"):
+            self._previous_time = time.time()
+            return 0
+        current_time = time.time()
+        fps = 1 / (current_time - self._previous_time)
+        self._previous_time = current_time
+        return fps
+    
+    def fixed_update(self, function):
+        target_frame_duration = 1 / self.target_fps
+        next_frame_time = time.time() + target_frame_duration
         
         while self.running:
-            start_time = time.time()
-            function(self)
+            function(self) 
 
-            elapsed_time = time.time() - start_time
-            sleep_time = target_frame_duration - elapsed_time
+            current_time = time.time()
+            sleep_time = next_frame_time - current_time
             
             if sleep_time > 0:
                 time.sleep(sleep_time)
+            
+            next_frame_time += target_frame_duration
     
     def update(self):
         """Run background tasks."""
         for function in self.functions:
-            self.log(f'\033[1m{function.__name__} \033[0m will run on a separate thread.')
+            self.log(f'\033[1m{function.__name__}\033[0m will run on a separate thread at \033[1m{self.target_fps}\033[0m fps.')
             try:
                 threading.Thread(
-                    target=self.updating_func_container, 
+                    target=self.fixed_update, 
                     args=(function,),
                     daemon=True, 
                     name=f'{function.__name__} Thread'

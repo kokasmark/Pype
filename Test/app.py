@@ -13,10 +13,11 @@ import numpy as np
 
 def generateImage(app):
     #this function runs on a background thread
-
     noise = np.random.randint(0, 256, (128, 128, 3), dtype=np.uint8)
+
+    app.state["fps"] = min(app.target_fps,int(app.fps()))
     app.state["image"] = pype.PypeImage(noise).base64
-    app.push(["image"])
+    app.push(["image","fps"])
     pass
 
 def nextPage(app):
@@ -45,6 +46,7 @@ app.state["numbers"] = []
 app.push(["count","numbers"])
 
 app.bind('count','count',HTMLAttributes.INNERHTML)
+app.bind('fps','fps',HTMLAttributes.INNERHTML)
 app.bind('image', 'image',HTMLAttributes.SRC)
 
 app.hook('count',changed_count)
