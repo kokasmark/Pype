@@ -67,7 +67,7 @@ class HTMLAttributes(Enum):
     ONBLUR = 'onblur'
 
 class Pype:
-    def __init__(self, title="Pype Application", entry="./frontend/", width=900, height = 600,tools = True):
+    def __init__(self, title="Pype Application", width=900, height = 600,tools = True):
         """Initialize the App"""
         os.system("")
 
@@ -79,7 +79,7 @@ class Pype:
         self.observers = {} # Stores observers, each observer observes a state array, where prefab attributes are stored. Manages prefabs.
         self.exposed = {} # Functions that are exposed to the app
 
-        self.config = {"title": title, "entry": entry, "tools": tools, "width": width, "height":height}
+        self.config = {"title": title, "entry": './frontend/', "tools": tools, "width": width, "height":height}
         self.running = False
 
         webview.DRAG_REGION_SELECTOR = ".window-handle"
