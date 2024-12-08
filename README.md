@@ -13,11 +13,10 @@ Good for fast visualization or **lightweight applications**
 ## Project creation
 Generates the project with all needed files.
 
-**Project-Name**
-├── **frontend** HTML, CSS, Pype frontend library.
-│   └── **assets** Any asset file.
-└── **app.py**
-
+**Project-Name**  
+├── **frontend** - HTML, CSS, Pype frontend library.  
+│   └── **assets** - Any asset file.  
+└── **app.py**  
 
 ```shell
 plumber new project-name
