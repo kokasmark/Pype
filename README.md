@@ -11,16 +11,23 @@ Good for fast visualization or **lightweight applications**
 # Documentation
 
 ## Project creation
+Generates the project with all needed files.
 
-```bash
-py plumber.py new project-name
+**Project-Name**
+└**frontend** HTML, CSS, Pype frontend library.
+    └**assets** Any asset file.
+└**app.py**
+
+```shell
+plumber new project-name
 ```
 
 ## Project build
-Generates an `.exe` executable file that can run by itself.
+Generates an `.exe` executable file from the given project.
+The project should follow the generated structure.
 
-```bash
-py plumber.py build project-name
+```shell
+plumber build project-name
 ```
 
 ## Expose
