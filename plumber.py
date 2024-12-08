@@ -34,58 +34,67 @@ def main():
             sys.exit(1)
     if action == "build":
         folder = input(f'\033[42m Plumber \033[0m Pype Project to build: \033[1m').strip()
-    print('\033[0m')
+        print('\033[0m')
 
-    if not os.path.isdir(folder):
-        print(f'\033[41m Error: \033[0m {folder} does not exist.')
-        return
+        if not os.path.isdir(folder):
+            print(f'\033[41m Error: \033[0m {folder} does not exist.')
+            return
 
-    # Clean previous builds
-    dist_folder = os.path.join(folder, 'dist')
-    build_folder = os.path.join(folder, 'build')
-    spec_file = os.path.join(folder, 'app.spec')
+        console = ""
+        
+        while console != "y" and console != "n":
+            console = input(f'\033[42m Plumber \033[0m Pype console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m')
+        print('\033[0m')
 
-    for path in [dist_folder, build_folder, spec_file]:
-        if os.path.exists(path):
-            shutil.rmtree(path) if os.path.isdir(path) else os.remove(path)
+        # Clean previous builds
+        dist_folder = os.path.join(folder, 'dist')
+        build_folder = os.path.join(folder, 'build')
+        spec_file = os.path.join(folder, 'app.spec')
 
-    # Paths for PyInstaller
-    app_file = os.path.join(folder, 'app.py')
-    frontend_folder = os.path.join(folder, 'frontend')
-    assets_folder = os.path.join(frontend_folder, 'assets')
+        for path in [dist_folder, build_folder, spec_file]:
+            if os.path.exists(path):
+                shutil.rmtree(path) if os.path.isdir(path) else os.remove(path)
 
-    if not os.path.isfile(app_file):
-        print(f'\033[41m Error: \033[0m {app_file} not found.')
-        return
+        # Paths for PyInstaller
+        app_file = os.path.join(folder, 'app.py')
+        frontend_folder = os.path.join(folder, 'frontend')
+        assets_folder = os.path.join(frontend_folder, 'assets')
 
-    # Build command
-    pyinstaller_cmd = [
-        'pyinstaller',
-        '--noconfirm',
-        '--clean',
-        '--onefile',
-        '--windowed',
-        '--log-level', 'FATAL',
-        '--python-option=-OO',
-        '--add-data', f'{frontend_folder}{os.pathsep}frontend',
-        '--add-data', f'{assets_folder}{os.pathsep}assets',
-        '--distpath', f'{os.path.join(folder, "build")}',
-        '--paths', os.getcwd(),
-        '--hidden-import', 'pkg_resources',
-        '--hidden-import', 'pkg_resources.extern',
-        '--workpath', os.path.join(folder, 'build', 'temp'),
-        app_file
-    ]  
+        if not os.path.isfile(app_file):
+            print(f'\033[41m Error: \033[0m {app_file} not found.')
+            return
 
-    try:
-        subprocess.run(pyinstaller_cmd, check=True)
-        print(f'\033[42m Success: \033[0m Build completed successfully.')
-        temp_folder = os.path.join(folder, 'build', 'temp')
-        if os.path.exists(temp_folder):
-            shutil.rmtree(temp_folder)
+        # Build command
+        pyinstaller_cmd = [
+            'pyinstaller',
+            '--noconfirm',
+            '--clean',
+            '--onefile',
+            '--windowed',
+            '--log-level', 'FATAL',
+            '--python-option=-OO',
+            '--add-data', f'{frontend_folder}{os.pathsep}frontend',
+            '--add-data', f'{assets_folder}{os.pathsep}assets',
+            '--distpath', f'{os.path.join(folder, "build")}',
+            '--paths', os.getcwd(),
+            '--hidden-import', 'pkg_resources',
+            '--hidden-import', 'pkg_resources.extern',
+            '--workpath', os.path.join(folder, 'build', 'temp'),
+            f'--icon={ os.path.join(frontend_folder,"favicon.ico")}',
+            app_file
+        ]  
+        
+        if console == "y":
+            pyinstaller_cmd.append('--console')
+        try:
+            subprocess.run(pyinstaller_cmd, check=True)
+            print(f'\033[42m Success: \033[0m Build completed successfully.')
+            temp_folder = os.path.join(folder, 'build', 'temp')
+            if os.path.exists(temp_folder):
+                shutil.rmtree(temp_folder)
 
-    except subprocess.CalledProcessError as e:
-        print(f'\033[41m Error: \033[0m Build failed: {str(e)}')
+        except subprocess.CalledProcessError as e:
+            print(f'\033[41m Error: \033[0m Build failed: {str(e)}')
 
     
 

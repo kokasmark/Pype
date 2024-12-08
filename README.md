@@ -16,6 +16,13 @@ Good for fast visualization or **lightweight applications**
 py plumber.py new project-name
 ```
 
+## Project build
+Generates an `.exe` executable file that can run by itself.
+
+```bash
+py plumber.py build
+```
+
 ## Expose
 
 **Description:**  
