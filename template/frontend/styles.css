@@ -1,5 +1,5 @@
 body{
-    background-color: #77dd69; 
+    background-color: var(--pype-primary); 
     font-family: monospace;
     color: white;
 
@@ -21,7 +21,7 @@ header{
     gap: 10px;
 }
 .icon{
-    background-color: #77dd69;
+    background-color: var(--pype-primary);
     width: 128px;
     border-radius: 50%;
     border: 1px solid white;

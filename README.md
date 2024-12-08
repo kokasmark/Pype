@@ -20,7 +20,7 @@ py plumber.py new project-name
 Generates an `.exe` executable file that can run by itself.
 
 ```bash
-py plumber.py build
+py plumber.py build project-name
 ```
 
 ## Expose

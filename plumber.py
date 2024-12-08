@@ -33,8 +33,7 @@ def main():
             print(f"Error: {e}")
             sys.exit(1)
     if action == "build":
-        folder = input(f'\033[42m Plumber \033[0m Pype Project to build: \033[1m').strip()
-        print('\033[0m')
+        folder = sys.argv[2]
 
         if not os.path.isdir(folder):
             print(f'\033[41m Error: \033[0m {folder} does not exist.')
@@ -43,7 +42,7 @@ def main():
         console = ""
         
         while console != "y" and console != "n":
-            console = input(f'\033[42m Plumber \033[0m Pype console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m')
+            console = input(f'\033[42m Plumber \033[0m Should display console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m')
         print('\033[0m')
 
         # Clean previous builds
@@ -86,15 +85,16 @@ def main():
         
         if console == "y":
             pyinstaller_cmd.append('--console')
+
         try:
             subprocess.run(pyinstaller_cmd, check=True)
-            print(f'\033[42m Success: \033[0m Build completed successfully.')
+            print(f'\033[42m Pype \033[0m Build completed successfully.')
             temp_folder = os.path.join(folder, 'build', 'temp')
             if os.path.exists(temp_folder):
                 shutil.rmtree(temp_folder)
 
         except subprocess.CalledProcessError as e:
-            print(f'\033[41m Error: \033[0m Build failed: {str(e)}')
+            print(f'\033[41m Pype \033[0m Build failed: {str(e)}')
 
     
 
