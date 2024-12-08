@@ -14,9 +14,10 @@ Good for fast visualization or **lightweight applications**
 Generates the project with all needed files.
 
 **Project-Name**
-└**frontend** HTML, CSS, Pype frontend library.
-    └**assets** Any asset file.
-└**app.py**
+├── **frontend** HTML, CSS, Pype frontend library.
+│   └── **assets** Any asset file.
+└── **app.py**
+
 
 ```shell
 plumber new project-name
@@ -54,7 +55,7 @@ onclick="call('functionFromPython')"
 
 ### Push
 Applies and finalizes state changes by triggering observers and hooks. Updates are batched for efficiency, ensuring cleaner and more controlled state management. 
-While this approach requires careful handling, it offers on-demand state updates, reducing unnecessary processing.
+It offers on-demand state updates, reducing unnecessary processing.
 
 **Python:**  
 ```python
