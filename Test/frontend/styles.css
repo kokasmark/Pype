@@ -1,7 +1,7 @@
 body{
-    background-color: var(--pype-primary); 
+    background-color: var(--pype-background); 
     font-family: monospace;
-    color: white;
+    color: var(--pype-primary);
 
     width: 100vw;
     height: 100vh;
@@ -21,18 +21,18 @@ header{
     gap: 10px;
 }
 .icon{
-    background-color: var(--pype-primary);
+    background-color: var(--pype-background);
     width: 128px;
     border-radius: 50%;
-    border: 1px solid white;
+    border: 1px solid var(--pype-primary);
 }
 
 button{
     background-color: transparent;
-    border: 1px solid white;
+    border: 1px solid var(--pype-primary);
     width: 128px;
     height: 50px;
-    color: white;
+    color: var(--pype-primary);
     border-radius: 10px;
     font-weight: bolder;
 
@@ -56,7 +56,7 @@ button:hover{
     text-align: center;
     border-radius: 50%;
     font-weight: bolder;
-    border: 3px solid white;
+    border: 3px solid var(--pype-primary);
 
     display: flex;
     justify-content: center;

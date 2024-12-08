@@ -1,5 +1,6 @@
 :root{
     --pype-primary: #12e49e;
+    --pype-background: #0d1117;
 }
 prefab{
     display: none;
