@@ -4,6 +4,44 @@ import sys
 import shutil
 import subprocess
 import os
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+import importlib.util
+import imp 
+
+
+class ReloadHandler(FileSystemEventHandler):
+    def __init__(self, reload_function,folder):
+        self.reload_function = reload_function
+        self.folder = folder
+
+    def on_any_event(self, event):
+        if event.is_directory:
+            return
+        if event.event_type in ['modified', 'created', 'deleted']:
+            print(f'\033[93mDetected change in: {event.src_path}\033[0m')
+            self.reload_function(self.folder)
+
+def start_watch(folder, reload_function):
+    event_handler = ReloadHandler(reload_function,folder)
+    observer = Observer()
+    observer.schedule(event_handler, folder, recursive=True)
+    observer.start()
+    return observer
+
+def reload_ui(folder):
+    print('\033[92mReloading UI...\033[0m')
+
+def dynamic_imp(name): 
+    print(imp.find_module(name) )
+    
+def run_app(folder):
+    # Create the full path to app.py
+    app_path = f'{folder}.app'
+
+    module_name = 'app'
+
+    dynamic_imp(app_path)
 
 def main():
     os.system("")
@@ -96,7 +134,23 @@ def main():
         except subprocess.CalledProcessError as e:
             print(f'\033[41m Pype \033[0m Build failed: {str(e)}')
 
-    
+    if action == "run":
+        folder = sys.argv[2]
+        frontend_folder = os.path.join(folder, 'frontend')
+
+        print(f'\033[42m Pype \033[0m Application is running, Hot reloading UI.')
+        # Run the app and try to get the Pype instance
+        run_app(folder)
+
+        # Start watching the frontend folder
+        observer = start_watch(frontend_folder, reload_ui)
+
+        try:
+            while True:
+                pass
+        except KeyboardInterrupt:
+            observer.stop()
+        observer.join()
 
 if __name__ == "__main__":
     main()
