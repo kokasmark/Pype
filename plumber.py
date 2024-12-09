@@ -6,42 +6,41 @@ import subprocess
 import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import importlib.util
-import imp 
+import time
 
-
-class ReloadHandler(FileSystemEventHandler):
-    def __init__(self, reload_function,folder):
-        self.reload_function = reload_function
+class AppReloader(FileSystemEventHandler):
+    def __init__(self, folder):
         self.folder = folder
+        self.process = None
+
+    def start_app(self):
+        if self.process:
+            self.process.terminate()
+        self.process = subprocess.Popen(
+            ['python', os.path.join(self.folder, 'app.py')]
+        )
 
     def on_any_event(self, event):
         if event.is_directory:
             return
-        if event.event_type in ['modified', 'created', 'deleted']:
-            print(f'\033[93mDetected change in: {event.src_path}\033[0m')
-            self.reload_function(self.folder)
+        print(f'\033[93mChange detected in {event.src_path}. Reloading...\033[0m')
+        self.start_app()
 
-def start_watch(folder, reload_function):
-    event_handler = ReloadHandler(reload_function,folder)
+def watch_folder(folder):
+    event_handler = AppReloader(folder)
+    event_handler.start_app()
+
     observer = Observer()
     observer.schedule(event_handler, folder, recursive=True)
     observer.start()
-    return observer
+    print('\033[94mWatching for changes...\033[0m')
 
-def reload_ui(folder):
-    print('\033[92mReloading UI...\033[0m')
-
-def dynamic_imp(name): 
-    print(imp.find_module(name) )
-    
-def run_app(folder):
-    # Create the full path to app.py
-    app_path = f'{folder}.app'
-
-    module_name = 'app'
-
-    dynamic_imp(app_path)
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
 
 def main():
     os.system("")
@@ -138,19 +137,9 @@ def main():
         folder = sys.argv[2]
         frontend_folder = os.path.join(folder, 'frontend')
 
-        print(f'\033[42m Pype \033[0m Application is running, Hot reloading UI.')
-        # Run the app and try to get the Pype instance
-        run_app(folder)
+        print(f'\033[42m Pype \033[0m Application is running, Reloading on change.')
 
-        # Start watching the frontend folder
-        observer = start_watch(frontend_folder, reload_ui)
-
-        try:
-            while True:
-                pass
-        except KeyboardInterrupt:
-            observer.stop()
-        observer.join()
+        watch_folder(folder)
 
 if __name__ == "__main__":
     main()
