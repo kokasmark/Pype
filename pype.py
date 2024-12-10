@@ -4,10 +4,6 @@ import os
 import sys
 import json
 import copy
-import win32gui
-import win32con
-import win32api
-import ctypes
 import time
 
 import base64
@@ -138,18 +134,6 @@ class Pype:
         self.update()
 
         webview.start(debug=self.config["tools"],gui='edgechromium')
-
-    def set_window_icon(self,favicon_path):
-        window_handle = ctypes.windll.user32.FindWindowW(None, self.config["title"])  # Replace with your window title
-
-        if not window_handle:
-            self.log("Window not found!","warning")
-            return
-        
-        icon_handle = win32gui.LoadImage(None, favicon_path, win32con.IMAGE_ICON, 32, 32, win32con.LR_LOADFROMFILE)
-
-        win32gui.SendMessage(window_handle, win32con.WM_SETICON, win32con.ICON_BIG, icon_handle)
-        win32gui.SendMessage(window_handle, win32con.WM_SETICON, win32con.ICON_SMALL, icon_handle)
 
     def window_event(self,event):
         if event == 'minimize':
