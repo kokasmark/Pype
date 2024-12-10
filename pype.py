@@ -234,17 +234,19 @@ class Pype:
         self.log(f"\033[1m{state_key}\033[0m is observed, rendering prefab \033[1m{prefab_id}\033[0m")
 
     def handle_observer(self, observer):
+        """Handles an observer"""
+        
         attributes_array = self.state[observer["attributes"]]
         prev_attributes_array = self.previous_state[observer["attributes"]]
 
         delta = len(attributes_array) - len(prev_attributes_array)
 
         if delta > 0:
-            self.instantiate(observer["prefab_id"],f'{observer["key_prefix"]}-{len(attributes_array)}',observer["parent_id"],attributes_array[len(attributes_array)-1])
+            for i in range(delta):
+                self.instantiate(observer["prefab_id"], f'{observer["key_prefix"]}-{len(prev_attributes_array) + i + 1}', observer["parent_id"], attributes_array[len(prev_attributes_array) + i])
         if delta < 0:
-            self.destroy(observer["prefab_id"], f'{observer["key_prefix"]}-{len(prev_attributes_array)}')
-
-        pass
+            for i in range(-delta):
+                self.destroy(observer["prefab_id"], f'{observer["key_prefix"]}-{len(attributes_array) + i+1}')
 
     def error(self,error_message):
         if self._window != None:

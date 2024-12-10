@@ -1,4 +1,9 @@
-from Pype import pype
+import sys
+
+# setting path
+sys.path.append('../')
+
+import pype
 import random
 import numpy as np
 
@@ -23,7 +28,10 @@ def changed_count(app):
 
     if(count > prevCount):
         app.state["numbers"].append({"count":count, "color": f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'})
+        app.state["numbers"].append({"count":count, "color": f'rgb({random.randint(50,255)},{random.randint(50,255)},{random.randint(50,255)})'})
     elif(count < prevCount):
+        app.state["numbers"].pop()
+        app.state["numbers"].pop()
         app.state["numbers"].pop()
 
     app.log(f'Count changed to {count} from {prevCount}')    
