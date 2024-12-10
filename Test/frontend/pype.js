@@ -48,7 +48,7 @@ function window_event(event){
 }
 
 //Calls a function on the other side
-function call(name,attributes){
+function call(name,attributes=[]){
     pywebview.api.call(name,attributes)
 }
 

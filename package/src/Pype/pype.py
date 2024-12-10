@@ -170,7 +170,7 @@ class Pype:
 
     def call(self,name,attributes):
         """Calls a function from the app side"""
-        if attributes is None:
+        if len(attributes) == 0:
             self.exposed[name](self)
         else:
             self.exposed[name](self,attributes)
