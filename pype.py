@@ -85,7 +85,8 @@ class Pype:
             self._previous_time = time.time()
             return 0
         current_time = time.time()
-        fps = 1 / (current_time - self._previous_time)
+        delta_time = current_time - self._previous_time
+        fps = 1 / delta_time if delta_time > 0 else 0  # Prevent division by zero
         self._previous_time = current_time
         return fps
     
@@ -125,9 +126,16 @@ class Pype:
         self.functions = functions
         self.pages = pages
         
-        self._window = webview.create_window(title=self.config["title"], url=self.config["entry"]+'index.html', js_api=self,
-                                             width=self.config["width"],height=self.config["height"],
-                                             frameless=True,draggable=True,easy_drag=True)
+        self._window = webview.create_window(
+            title=self.config["title"],
+            url=f'{self.config["entry"]}index.html',
+            js_api=self,
+            width=self.config["width"],
+            height=self.config["height"],
+            frameless=True,
+            draggable=True,
+            easy_drag=True
+        )
         self.running = True
         self.target_fps = target
 
@@ -142,9 +150,11 @@ class Pype:
             webview.windows[0].destroy()
             self.running = False
         
-
     def load_page(self, index):
         """Loads a page from the exposed pages, the unloaded page gets .unloaded for exit animations, and .loaded for the loaded for entry animations"""
+        if index < 0 or index >= len(self.pages):
+            self.log(f"Invalid page index: {index}", "error")
+            return
         self._window.evaluate_js(f"unload({index})")# Pass the next page index to the unload so it can call load_page_immidiate after exit animations
 
     def load_page_immidiate(self,index):
@@ -153,6 +163,9 @@ class Pype:
 
     def expose(self, function):
         """Exposes a function from the app side"""
+        if not callable(function):
+            self.log(f"Cannot expose non-callable object: {function}", "error")
+            return
         self.exposed[function.__name__] = function
 
     def call(self,name):
@@ -251,12 +264,13 @@ class Pype:
             self._window.evaluate_js(f'destroy("{prefab_id}","{key}")')
     
     def log(self,message,type='success'):
-        header = f'\033[42m Pype \033[0m'
-
-        if type == 'warning':
-            header = f'\033[43m Pype \033[0m'
+        headers = {
+            'success': '\033[42m Pype \033[0m',
+            'warning': '\033[43m Pype \033[0m',
+            'error': '\033[41m Pype \033[0m'
+        }
+        header = headers.get(type, headers['success'])
         if type == 'error':
-            header = f'\033[41m Pype \033[0m'
             self.error(message)
 
         print(f'{header} {message}')
