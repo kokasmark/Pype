@@ -1,0 +1,80 @@
+:root{
+    --pype-primary: #12e49e;
+    --pype-background: #0d1117;
+}
+prefab{
+    display: none;
+}
+body{
+    animation: 0.3s load ease-out forwards;
+}
+
+.window-handle {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    height: 30px;
+    background-color: white;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.window-handle p {
+    background-color: white;
+    color: var(--pype-primary);
+    border: 1px var(--pype-primary) solid;
+    margin: 0;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 10px;
+}
+
+.window-handle p:hover {
+    background-color: var(--pype-primary);
+    color: white;
+}
+
+
+.destroyed{
+    animation: 0.1s destroy ease-out forwards;
+}
+.unloaded{
+    animation: 0.3s unload ease-out forwards !important;
+}
+@keyframes destroy {
+    0%{
+        scale: 1.2;
+    }
+    10%{
+        scale: 1;
+    }
+    100%{
+        scale: 0;
+    }
+}
+@keyframes unload {
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+@keyframes load {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

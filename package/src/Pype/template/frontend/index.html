@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pype App</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Pype libraries -->
+    <link rel="stylesheet" href="pype.css">
+    <script src="pype.js"></script>
+</head>
+<body>
+    <div class="window-handle">
+        <p onclick="window_event('minimize')">_</p>
+        <p onclick="window_event('close')">X</p>
+    </div>
+    <header>
+        <img class="icon" src="assets/logo.png"/>
+        <h1>Your new Pype Application is ready</h1>
+    </header>
+    
+    <div class="counter">
+        <h1>Count: <b key="count">0</b></h1>
+        <button onclick="state['count']++; push(['count']);console.log(state)">Increment</button>
+        <button onclick="state['count']--; push(['count'])">Decrement</button>
+    </div>
+
+    <div id="prefab-parent">
+        
+    </div>
+
+
+    <prefab id="prefab-number">
+        <div class="number"style="color: $color; border-color: $color;">$count</div>
+    </prefab>
+
+</body>
+</html>

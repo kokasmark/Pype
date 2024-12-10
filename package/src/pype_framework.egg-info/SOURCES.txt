@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/Pype/__init__.py
+src/Pype/plumber.py
+src/Pype/pype.py
+src/Pype/template/frontend/assets/logo.png
+src/pype_framework.egg-info/PKG-INFO
+src/pype_framework.egg-info/SOURCES.txt
+src/pype_framework.egg-info/dependency_links.txt
+src/pype_framework.egg-info/entry_points.txt
+src/pype_framework.egg-info/top_level.txt

@@ -1,0 +1,76 @@
+body{
+    background-color: var(--pype-background); 
+    font-family: monospace;
+    color: var(--pype-primary);
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    transition: 1s;
+}
+header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.icon{
+    background-color: var(--pype-background);
+    width: 128px;
+    border-radius: 50%;
+    border: 1px solid var(--pype-primary);
+}
+
+button{
+    background-color: transparent;
+    border: 1px solid var(--pype-primary);
+    width: 128px;
+    height: 50px;
+    color: var(--pype-primary);
+    border-radius: 10px;
+    font-weight: bolder;
+
+    transition: 0.1s;
+    cursor: pointer;
+
+    margin: 10px;
+}
+button:hover{
+    scale: 1.1;
+}
+#prefab-parent{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.number{
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: bolder;
+    border: 3px solid var(--pype-primary);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: 0.3s number-pop ease-in;
+}
+@keyframes number-pop {
+    0%{
+        scale: 0;
+    }
+    90%{
+        scale: 1.2;
+    }
+    100%{
+        scale: 1;
+    }
+}

@@ -1,6 +1,21 @@
+Metadata-Version: 2.1
+Name: pype-framework
+Version: 1.0.3
+Summary: Python + HTML desktop app framework
+Home-page: https://github.com/kokasmark/Pype
+Author: Kokas Márk
+Author-email: mark.kokas04@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # Pype
 
-![logo](banner.png)
+![logo](https://github.com/kokasmark/Pype/blob/main/banner.png?raw=true)
 
 **Fast** and **Simple** GUI framework for Python
 
@@ -10,13 +25,7 @@ Good for fast visualization or **lightweight applications**
 
 | The application | The backend | The frontend |
 |-----------------|--------------|---------------|
-| ![The application](template-app.png) | ![The backend](template-python.png) | ![The frontend](template-html.png) |
-
-# Installation
-```shell
-pip install pype-framework
-```
-
+| ![The application](https://github.com/kokasmark/Pype/blob/main/template-app.png?raw=true) | ![The backend](https://github.com/kokasmark/Pype/blob/main/template-python.png?raw=true) | ![The frontend](https://github.com/kokasmark/Pype/blob/main/template-html.png?raw=true) |
 # Documentation
 
 ## Project creation

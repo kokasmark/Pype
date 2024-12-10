@@ -1,6 +1,6 @@
 # Pype
 
-![logo](banner.png)
+![logo](https://github.com/kokasmark/Pype/blob/main/banner.png?raw=true)
 
 **Fast** and **Simple** GUI framework for Python
 
@@ -10,13 +10,7 @@ Good for fast visualization or **lightweight applications**
 
 | The application | The backend | The frontend |
 |-----------------|--------------|---------------|
-| ![The application](template-app.png) | ![The backend](template-python.png) | ![The frontend](template-html.png) |
-
-# Installation
-```shell
-pip install pype-framework
-```
-
+| ![The application](https://github.com/kokasmark/Pype/blob/main/template-app.png?raw=true) | ![The backend](https://github.com/kokasmark/Pype/blob/main/template-python.png?raw=true) | ![The frontend](https://github.com/kokasmark/Pype/blob/main/template-html.png?raw=true) |
 # Documentation
 
 ## Project creation
