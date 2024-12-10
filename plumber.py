@@ -14,8 +14,9 @@ class AppReloader(FileSystemEventHandler):
         self.process = None
 
     def start_app(self):
-        if self.process:
+        if self.process and self.process.poll() is None:
             self.process.terminate()
+
         self.process = subprocess.Popen(
             ['python', os.path.join(self.folder, 'app.py')]
         )
