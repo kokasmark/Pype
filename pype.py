@@ -204,10 +204,10 @@ class Pype:
             self.update_frontend(key,self.state[key])
         return self.state
     
-    def bind(self, node_id, state_key, attr=HTMLAttributes.INNERHTML):
+    def bind(self, node_key, state_key, attr=HTMLAttributes.INNERHTML):
         """Binds a node to a state value"""
-        self.nodes[state_key] = {"id": node_id, "attribute": attr.value}
-        self.log(f'Nodes with key: \033[1m{node_id}\033[0m will render state: \033[1m{state_key}\033[0m with attribute: \033[1m{attr.value}\033[0m')
+        self.nodes[state_key] = {"key": node_key, "attribute": attr.value}
+        self.log(f'Nodes with key: \033[1m{node_key}\033[0m will render state: \033[1m{state_key}\033[0m with attribute: \033[1m{attr.value}\033[0m')
 
     def hook(self, state_key, function):
         self.hooks[state_key] = function
@@ -268,4 +268,4 @@ class Pype:
             self.log(f'Warning {key} doesnt have a binded UI element!','warning')
             return
         if self._window != None and not (node is None):
-            self._window.evaluate_js(f'updateElement("{node["id"]}","{node["attribute"]}", "{value}")')
+            self._window.evaluate_js(f'updateElement("{node["key"]}","{node["attribute"]}", "{value}")')
