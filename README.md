@@ -17,6 +17,11 @@ Good for fast visualization or **lightweight applications**
 pip install pype-framework
 ```
 
+# Import
+```python
+from Pype import pype
+```
+
 # Documentation
 
 ## Project creation
