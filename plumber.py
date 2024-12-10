@@ -73,13 +73,14 @@ def main():
         folder = sys.argv[2]
 
         if not os.path.isdir(folder):
-            print(f'\033[41m Error: \033[0m {folder} does not exist.')
-            return
+            print(f'\033[41m[Error]\033[0m Folder \033[1m{folder}\033[0m does not exist.')
+            sys.exit(1)
 
         console = ""
         
-        while console != "y" and console != "n":
-            console = input(f'\033[42m [Plumber] \033[0m Should display console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m')
+        while console not in {"y", "n"}:
+            console = input(f'\033[42m[Plumber]\033[0m Show console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m').lower()
+
         print('\033[0m')
 
         # Clean previous builds
