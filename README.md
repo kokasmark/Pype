@@ -40,8 +40,17 @@ plumber new project-name
 Generates an `.exe` executable file from the given project.
 The project should follow the generated structure.
 
+Call from the projects directory.
+
 ```shell
-plumber build project-name
+plumber build
+```
+
+## Project upgrade
+Upgrade the frontend API in a given project, to stay up to date with the backend API.
+
+```shell
+plumber upgrade
 ```
 
 ## Expose

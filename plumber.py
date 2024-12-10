@@ -8,6 +8,8 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import time
 
+import importlib.resources as pkg_resources
+from Pype import template
 class AppReloader(FileSystemEventHandler):
     def __init__(self, folder):
         self.folder = folder
@@ -46,7 +48,14 @@ def watch_folder(folder):
 def main():
     os.system("")
 
-    source_folder = "template"
+    if len(sys.argv) == 1:
+        print(f'\033[1mplumber\033[0m new project-name')
+        print(f'Project-Folder/\033[1m plumber\033[0m build')
+        print(f'Project-Folder/\033[1m plumber\033[0m run')
+        print(f'Project-Folder/\033[1m plumber\033[0m upgrade')
+        return
+    
+    source_folder =  str(pkg_resources.files(template)).split("'")[1]
     action = sys.argv[1]
 
     if action == "new":
@@ -58,7 +67,7 @@ def main():
             print(f"Error: Source folder '{source_folder}' does not exist.")
             sys.exit(1)
         
-        destination_folder = os.path.join(os.path.dirname(source_folder), new_project_name)
+        destination_folder = os.path.join(os.getcwd(), new_project_name)
 
         if os.path.exists(destination_folder):
             print(f"Error: Destination folder '{destination_folder}' already exists.")
@@ -71,7 +80,7 @@ def main():
             print(f"Error: {e}")
             sys.exit(1)
     if action == "build":
-        folder = sys.argv[2]
+        folder = os.getcwd()
 
         if not os.path.isdir(folder):
             print(f'\033[41m[Error]\033[0m Folder \033[1m{folder}\033[0m does not exist.')
@@ -137,12 +146,28 @@ def main():
 
 
     if action == "run":
-        folder = sys.argv[2]
+        folder = os.getcwd()
         frontend_folder = os.path.join(folder, 'frontend')
 
         print(f'\033[42m Pype \033[0m Application is running, Reloading on change.')
 
         watch_folder(folder)
+
+    if action == "upgrade":
+        folder = os.getcwd()
+        frontend_folder = os.path.join(folder, 'frontend')
+        
+        source_pype_js = os.path.join(source_folder, 'frontend', 'pype.js')
+        source_pype_css = os.path.join(source_folder, 'frontend', 'pype.css')
+        
+        dest_pype_js = os.path.join(frontend_folder, 'pype.js')
+        dest_pype_css = os.path.join(frontend_folder, 'pype.css')
+
+        if os.path.exists(source_pype_js):
+            shutil.copy(source_pype_js, dest_pype_js)
+        
+        if os.path.exists(source_pype_css):
+            shutil.copy(source_pype_css, dest_pype_css)
 
 if __name__ == "__main__":
     main()
