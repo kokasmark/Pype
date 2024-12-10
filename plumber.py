@@ -132,7 +132,8 @@ def main():
                 shutil.rmtree(temp_folder)
 
         except subprocess.CalledProcessError as e:
-            print(f'\033[41m Pype \033[0m Build failed: {str(e)}')
+            print(f'\033[41m[Pype]\033[0m Build failed with error code {e.returncode}: \033[1m{e}\033[0m')
+
 
     if action == "run":
         folder = sys.argv[2]
