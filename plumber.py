@@ -14,8 +14,9 @@ class AppReloader(FileSystemEventHandler):
         self.process = None
 
     def start_app(self):
-        if self.process:
+        if self.process and self.process.poll() is None:
             self.process.terminate()
+
         self.process = subprocess.Popen(
             ['python', os.path.join(self.folder, 'app.py')]
         )
@@ -51,7 +52,7 @@ def main():
     if action == "new":
         new_project_name = sys.argv[2]
 
-        print(f'\033[42m Plumber \033[0m creating project: \033[1m{new_project_name}\033[0m')
+        print(f'\033[42m [Plumber] \033[0m creating project: \033[1m{new_project_name}\033[0m')
 
         if not os.path.exists(source_folder):
             print(f"Error: Source folder '{source_folder}' does not exist.")
@@ -65,7 +66,7 @@ def main():
 
         try:
             shutil.copytree(source_folder, destination_folder)
-            print(f'\033[42m Plumber \033[0m \033[1m{new_project_name}\033[0m is created. Productive Coding!')
+            print(f'\033[42m [Plumber] \033[0m \033[1m{new_project_name}\033[0m is created. Productive Coding!')
         except Exception as e:
             print(f"Error: {e}")
             sys.exit(1)
@@ -73,13 +74,14 @@ def main():
         folder = sys.argv[2]
 
         if not os.path.isdir(folder):
-            print(f'\033[41m Error: \033[0m {folder} does not exist.')
-            return
+            print(f'\033[41m[Error]\033[0m Folder \033[1m{folder}\033[0m does not exist.')
+            sys.exit(1)
 
         console = ""
         
-        while console != "y" and console != "n":
-            console = input(f'\033[42m Plumber \033[0m Should display console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m')
+        while console not in {"y", "n"}:
+            console = input(f'\033[42m[Plumber]\033[0m Show console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m').lower()
+
         print('\033[0m')
 
         # Clean previous builds
@@ -131,7 +133,8 @@ def main():
                 shutil.rmtree(temp_folder)
 
         except subprocess.CalledProcessError as e:
-            print(f'\033[41m Pype \033[0m Build failed: {str(e)}')
+            print(f'\033[41m[Pype]\033[0m Build failed with error code {e.returncode}: \033[1m{e}\033[0m')
+
 
     if action == "run":
         folder = sys.argv[2]
