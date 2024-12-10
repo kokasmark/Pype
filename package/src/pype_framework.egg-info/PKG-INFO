@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pype-framework
-Version: 1.0.10
+Version: 1.0.11
 Summary: Python + HTML desktop app framework
 Home-page: https://github.com/kokasmark/Pype
 Author: Kokas Márk
@@ -22,3 +22,5 @@ License-File: LICENSE
 Render **Python** computed values and interact them via **HTML** in a webview application
 
 Good for fast visualization or **lightweight applications**
+
+**Documentation** - https://github.com/kokasmark/Pype/blob/main/README.md

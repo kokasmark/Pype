@@ -19,8 +19,8 @@ def generateImage(app):
 def nextPage(app):
     app.load_page(1)
 
-def functionFromPython(app):
-    app.log("I was called from the frontend side!")
+def functionFromPython(app,attributes):
+    app.log(f"I was called from the frontend side! Attributes: {str(attributes[0])}")
 
 def changed_count(app):
     count = app.state["count"]

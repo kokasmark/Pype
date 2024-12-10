@@ -168,9 +168,12 @@ class Pype:
             return
         self.exposed[function.__name__] = function
 
-    def call(self,name):
+    def call(self,name,attributes):
         """Calls a function from the app side"""
-        self.exposed[name](self)
+        if attributes is None:
+            self.exposed[name](self)
+        else:
+            self.exposed[name](self,attributes)
 
     def push(self, keys,state=None):
         """Applies and finalizes state changes calling observers and hooks"""

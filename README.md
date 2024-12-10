@@ -57,11 +57,13 @@ app.expose(functionFromPython)
 ## Call
 
 **Description:**  
-Calls an exposed function from the frontend
+Calls an exposed function from the frontend.
+Attributes can be left empty.
 
 **Example:**  
 ```javascript
 onclick="call('functionFromPython')"
+onclick="call('functionFromPython', [attrib-1, attrib-2])"
 ```
 
 ## State Management
