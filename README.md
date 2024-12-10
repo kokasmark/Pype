@@ -8,25 +8,9 @@ Render **Python** computed values and interact them via **HTML** in a webview ap
 
 Good for fast visualization or **lightweight applications**
 
-<div style="display: flex; justify-content: space-around; align-items: center; gap: 10px;">
-
-<div style="text-align: center;">
-  <img src="template-app.png" alt="The application" width="300">
-  <p><strong style="color: #12e49e;">The application</strong></p>
-</div>
-
-<div style="text-align: center;">
-  <img src="template-python.png" alt="The backend" width="300">
-  <p><strong style="color: #12e49e;">The backend</strong></p>
-</div>
-
-<div style="text-align: center;">
-  <img src="template-html.png" alt="The frontend" width="300">
-  <p><strong style="color: #12e49e;">The frontend</strong></p>
-</div>
-
-</div>
-
+| The application | The backend | The frontend |
+|-----------------|--------------|---------------|
+| ![The application](template-app.png) | ![The backend](template-python.png) | ![The frontend](template-html.png) |
 # Documentation
 
 ## Project creation
