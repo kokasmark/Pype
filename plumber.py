@@ -51,7 +51,7 @@ def main():
     if action == "new":
         new_project_name = sys.argv[2]
 
-        print(f'\033[42m Plumber \033[0m creating project: \033[1m{new_project_name}\033[0m')
+        print(f'\033[42m [Plumber] \033[0m creating project: \033[1m{new_project_name}\033[0m')
 
         if not os.path.exists(source_folder):
             print(f"Error: Source folder '{source_folder}' does not exist.")
@@ -65,7 +65,7 @@ def main():
 
         try:
             shutil.copytree(source_folder, destination_folder)
-            print(f'\033[42m Plumber \033[0m \033[1m{new_project_name}\033[0m is created. Productive Coding!')
+            print(f'\033[42m [Plumber] \033[0m \033[1m{new_project_name}\033[0m is created. Productive Coding!')
         except Exception as e:
             print(f"Error: {e}")
             sys.exit(1)
@@ -79,7 +79,7 @@ def main():
         console = ""
         
         while console != "y" and console != "n":
-            console = input(f'\033[42m Plumber \033[0m Should display console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m')
+            console = input(f'\033[42m [Plumber] \033[0m Should display console? (\33[5my\33[0m/\33[5mn\33[0m) \033[1m')
         print('\033[0m')
 
         # Clean previous builds
