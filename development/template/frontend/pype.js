@@ -48,8 +48,8 @@ function window_event(event){
 }
 
 //Calls a function on the other side
-function call(name){
-    pywebview.api.call(name)
+function call(name,attributes=[]){
+    pywebview.api.call(name,attributes)
 }
 
 //Unloads current page after exit animation it calls load_page_immidiate

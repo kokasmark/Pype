@@ -1,13 +1,4 @@
-import sys
-import os
-
-# Get the parent directory (where pype.py is located)
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, parent_dir)
-
-
-import pype
-from pype import HTMLAttributes
+from Pype import pype
 import random
 import numpy as np
 
@@ -30,7 +21,7 @@ app.state["numbers"] = []
 
 app.push(["count","numbers"])
 
-app.bind('count','count',HTMLAttributes.INNERHTML)
+app.bind('count','count',pype.HTMLAttributes.INNERHTML)
 
 app.hook('count',changed_count)
 app.observe('numbers','prefab-number','number','prefab-parent')
